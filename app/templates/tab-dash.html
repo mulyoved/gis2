@@ -1,0 +1,28 @@
+<ion-view title="Self Test">
+  <ion-content class="has-header padding">
+      <p>Device ID: {{uuid}}</p>
+      <button ng-click="doLog()">Log Sample Message</button>
+      <h3>PubNub</h3>
+      <button ng-click="PubNub_Init()">InitPubNub</button>
+      <button ng-click="PubNub_sendBySocket()">Send Test</button>
+      <button ng-click="PubNub_sendLocation()">Send Location</button>
+      <button ng-click="PubNub_requestLocations()">Request Locations</button>
+      <button ng-click="PubNub_ngListChannels()">ngListChannels</button>
+      <pre>Status : {{socketStatus}}</pre>
+      <pre>Answer: {{socketServerAnswer}}</pre>
+      <pre>{{logMessages}}</pre>
+      <!-- Failed to publish on Heruko, got Origin Error
+      <p>-----------------------------------------------------------------------------------</p>
+      <h3>socket.io</h3>
+      <button ng-click="InitSocketIO()">InitSocketIO</button>
+      <button ng-click="sendBySocket()">Send Test</button>
+      <button ng-click="sendLocation()">Send Location</button>
+      <button ng-click="requestLocations()">Request Locations</button>
+      -->
+      <p>-----------------------------------------------------------------------------------</p>
+      <h3>GIS</h3>
+      <button ng-click="getGISLocation()">Get Location</button>
+      <button ng-click="watchGISLocation()">Watch Location</button>
+      <pre>GIS Info: {{gisInfo}}</pre>
+  </ion-content>
+</ion-view>
