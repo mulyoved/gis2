@@ -1,9 +1,10 @@
 <ion-view title="Friends">
-  <ion-content class="has-header">
-    <ion-list>
-      <ion-item ng-repeat="friend in friends" type="item-text-wrap" href="#/tab/friend/{{friend.id}}">
-        {{friend.name}}
-      </ion-item>
-    </ion-list>
-  </ion-content>
+    <ion-content class="has-header" scroll="false" data-tap-disabled="true">
+        <google-map id="map"
+                    center="map.center"
+                    draggable="true"
+                    zoom="map.zoom">
+
+        </google-map>
+    </ion-content>
 </ion-view>

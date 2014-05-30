@@ -6,7 +6,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('Gis2', ['ionic', 'Gis2.controllers', 'Gis2.services', 'pubnub.angular.service'])
+angular.module('Gis2', ['ionic', 'Gis2.controllers', 'Gis2.services', 'pubnub.angular.service', 'google-maps'])
 
 .run(function($ionicPlatform, $log) {
   $ionicPlatform.ready(function() {

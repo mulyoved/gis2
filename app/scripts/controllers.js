@@ -6,92 +6,73 @@ angular.module('Gis2.controllers', [])
     var isServer = true;
     var socket;
     var lastPos = {};
-    $scope.logMessages = '';
-    /*
-    function concat(array1, array2, index) {
-        return array1.concat(Array.prototype.slice.call(array2, index));
-    }
 
-    (function(){
-        var oldLog = $log.log;
-        $log.log = function () {
-            // DO MESSAGE HERE.
-            //var msg = concat([], arguments, 0);
-            var msg = '';
-            var seen = [];
-            for (var i = 0; i < arguments.length; i++) {
-                msg += ', ' + JSON.stringify(arguments[i], function(key, val) {
-                    if (typeof val == "object") {
-                        if (seen.indexOf(val) >= 0)
-                            return;
-
-                        seen.push(val);
-                    }
-                    return val
-                }, 2);
-            }
-
-            $scope.logMessages = $scope.logMessages + '\n' + msg;
-            oldLog.apply(console, arguments);
-        };
-    })();
-    */
-
-    //var orgLog= $log.log;
-    /*
-    $log.log = function() {
-        orgLog(arguments);
-        var msg = '';
-        for (var i = 0; i < arguments.length; i++) {
-            msg += ', ' + arguments[i];
-        }
-        $scope.logMessages = msg + '\n' + $scope.logMessages;
+    $scope.map = {
+        center: {
+            latitude: 32.0813,
+            longitude: 34.781768
+        },
+        zoom: 16
     };
-    */
 
     $scope.doLog = function() {
-        console.log('Sample Log Message');
+        $scope.socketStatus = new Date();
+        console.log('Sample Log Message, text only');
+        console.log('Sample Log Message, simple params', 'ok', 1, true);
+        console.log('Sample Log Message, object', $scope);
+
+        console.log('Sample Log Message, text only');
     };
 
-    $log.log('uuid', $scope.uuid);
+    console.log('uuid', $scope.uuid);
 
     var onSuccess = function(position) {
         lastPos = {
-            Latitude: position.coords.latitude,
-            Longitude: position.coords.longitude,
-            Altitude: position.coords.altitude,
-            Accuracy: position.coords.accuracy,
-            Altitude_Accuracy: position.coords.altitudeAccuracy,
-            Heading: position.coords.heading,
-            Speed: position.coords.speed,
-            Timestamp: position.timestamp
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            altitude: position.coords.altitude,
+            accuracy: position.coords.accuracy,
+            altitude_Accuracy: position.coords.altitudeAccuracy,
+            heading: position.coords.heading,
+            speed: position.coords.speed,
+            timestamp: position.timestamp
         };
         $scope.$apply(function() {
             $scope.gisInfo = JSON.stringify(lastPos, null, 2);
+            //$scope.map.center = lastPos;
+            $scope.map.center =lastPos;
+            $scope.$broadcast('event:gislocation', lastPos);
         });
 
     };
 
     var onError = function(error) {
-        lastPos = {
+        var err = {
             error_code: error.code,
             message: error.message
         };
 
         $scope.$apply(function() {
-            $scope.gisInfo = JSON.stringify(lastPos, null, 2);
+            $scope.gisInfo = JSON.stringify(err, null, 2);
         });
     };
 
     $scope.getGISLocation = function() {
         navigator.geolocation.getCurrentPosition(onSuccess, onError);
-        $log.log('getCurrentPosition');
+        console.log('getCurrentPosition');
     };
 
     $scope.watchGISLocation = function() {
-        var options = { maximumAge: 6000, timeout: 20000, enableHighAccuracy: true };
+        /* Unreliable http://stackoverflow.com/questions/13254420/phonegap-cordova-watchposition-fire-success-every-1-second
+        var options = { maximumAge: 10000, timeout: 60000 * 3, enableHighAccuracy: true };
         var watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
-        $log.log('Watch', watchID);
+        console.log('Watch', watchID);
+        */
+
+        var activeWatch = setInterval(function() {
+            navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        }, 5000);
+
     };
 
     $scope.safeApply = function(fn) {
@@ -126,27 +107,27 @@ angular.module('Gis2.controllers', [])
             }
         }
 
-        $log.log('Connecting to', serverAddress);
+        console.log('Connecting to', serverAddress);
         socket = io.connect(serverAddress);
 
         setSocketStatus("connecting");
 
         socket.on('load:request_coords', function (data) {
-            $log.log('load:request_coords', data);
+            console.log('load:request_coords', data);
             $scope.$apply(function() {
                 $scope.socketServerAnswer = JSON.stringify(data, null, 2);
             });
         });
 
         socket.on('load:coords', function (data) {
-            $log.log('load:coords', data);
+            console.log('load:coords', data);
             $scope.$apply(function() {
                 $scope.socketServerAnswer = JSON.stringify(data, null, 2);
             });
         });
 
         socket.on('load:test', function (data) {
-            $log.log('load:test', data);
+            console.log('load:test', data);
             $scope.$apply(function() {
                 $scope.socketServerAnswer = data;
             });
@@ -160,7 +141,7 @@ angular.module('Gis2.controllers', [])
         });
 
         socket.on('connect', function (data) {
-            $log.log('Connected', data, socket.socket.sessionid);
+            console.log('Connected', data, socket.socket.sessionid);
             setSocketStatus("connected");
         });
 
@@ -182,7 +163,7 @@ angular.module('Gis2.controllers', [])
     };
 
     $scope.sendBySocket = function() {
-        $log.log('Send By Socket');
+        console.log('Send By Socket');
 
         socket.emit('send:test', {
                 data: 'Test Message'
@@ -190,7 +171,7 @@ angular.module('Gis2.controllers', [])
     };
 
     $scope.sendLocation = function() {
-        $log.log('Send Location');
+        console.log('Send Location');
 
         socket.emit('send:coords', {
             id: $scope.uuid,
@@ -199,7 +180,7 @@ angular.module('Gis2.controllers', [])
     };
 
     $scope.requestLocations = function() {
-        $log.log('Eequest Locations');
+        console.log('Eequest Locations');
 
         socket.emit('send:request_coords', {
             id: $scope.uuid,
@@ -209,7 +190,7 @@ angular.module('Gis2.controllers', [])
 
     //PubNub
     $scope.PubNub_Init = function() {
-        $log.log('PubNub_Init');
+        console.log('PubNub_Init');
 
         PubNub.init({
             publish_key: 'pub-c-7d9f3531-eb29-4da1-a030-734b93eb9bf9',
@@ -223,12 +204,12 @@ angular.module('Gis2.controllers', [])
             $scope.$apply(function() {
                 $scope.socketServerAnswer = JSON.stringify(payload, null, 2);
             });
-            $log.log('Incomming Data from', event, payload);
+            console.log('Incomming Data from', event, payload);
         });
 
         $rootScope.$on(PubNub.ngMsgEv('test'), function(event, payload) {
             // payload contains message, channel, env...
-            $log.log('Test: got a message event:', event, payload);
+            console.log('Test: got a message event:', event, payload);
         });
 
 
@@ -238,7 +219,7 @@ angular.module('Gis2.controllers', [])
             callback: function(data) {
                 $scope.$apply(function() {
                     $scope.socketServerAnswer = JSON.stringify(data, null, 2);
-                    $log.log('Incomming Data from', data);
+                    console.log('Incomming Data from', data);
                 });
             }
         });
@@ -246,7 +227,7 @@ angular.module('Gis2.controllers', [])
     };
 
     $scope.PubNub_sendBySocket = function() {
-        $log.log('PubNub_sendBySocket');
+        console.log('PubNub_sendBySocket');
 
         PubNub.ngPublish({
             channel: 'test',
@@ -255,7 +236,7 @@ angular.module('Gis2.controllers', [])
     };
 
     $scope.PubNub_sendLocation = function() {
-        $log.log('PubNub_sendLocation');
+        console.log('PubNub_sendLocation');
 
         lastPos.id = $scope.uuid;
         PubNub.ngPublish({
@@ -264,24 +245,42 @@ angular.module('Gis2.controllers', [])
         });
     };
 
+    $scope.PubNub_reportLocation = function() {
+        console.log('PubNub_reportLocation');
+        $scope.$on('event:gislocation', function(event, lastPos) {
+            console.log('PubNub_reportLocation', lastPos);
+            lastPos.id = $scope.uuid;
+            PubNub.ngPublish({
+                channel: 'gisinfo',
+                message: lastPos
+            });
+        });
+    };
+
     $scope.PubNub_requestLocations = function() {
-        $log.log('PubNub_requestLocations');
+        console.log('PubNub_requestLocations');
         PubNub.ngHistory({channel:'gisinfo', count:500});
     };
 
     $scope.PubNub_ngListChannels = function() {
         var channels = PubNub.ngListChannels();
-        $log.log(channels);
+        console.log(channels);
     };
 
 })
 
 .controller('FriendsCtrl', function($scope, Friends) {
-  $scope.friends = Friends.all();
-})
+    $scope.item = {
+        text: "String"
+    };
 
-.controller('FriendDetailCtrl', function($scope, $stateParams, Friends) {
-  $scope.friend = Friends.get($stateParams.friendId);
+    $scope.map = {
+        center: {
+            latitude: 32.0813,
+            longitude: 34.781768
+        },
+        zoom: 16
+    };
 })
 
 .controller('AccountCtrl', function($scope) {
