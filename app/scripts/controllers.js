@@ -279,6 +279,9 @@ angular.module('Gis2.controllers', [])
             latitude: 32.0813,
             longitude: 34.781768
         },
+        options: {
+            disableDefaultUI: true
+        },
         zoom: 16
     };
 })
