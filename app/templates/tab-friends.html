@@ -6,6 +6,15 @@
                     options="map.options"
                     zoom="map.zoom">
 
+            <markers models="map.markers" coords="'self'" icon="'icon'" click="'onClicked'" fit='true'>
+                <windows class="marker-info-window" show="'showWindow'" closeClick="'closeClick'" ng-cloak>
+                    <div >
+                        <p ng-non-bindable>{{title}}</p>
+                        <p ng-non-bindable>{{description}}</p>
+                    </div>
+                </windows>
+            </markers>
         </google-map>
+        <a class="map-center-button" ng-click="centerMap()"><i class="ion-navigate"></i></a>
     </ion-content>
 </ion-view>

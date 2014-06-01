@@ -1,19 +1,54 @@
 'use strict';
 angular.module('Gis2.controllers', [])
 
-.controller('SelfTestCtrl', function($rootScope, $scope, $log, PubNub) {
+.controller('SelfTestCtrl', function($rootScope, $state, $scope, $log, PubNub) {
     $scope.uuid = Math.random().toString(16).substring(2,15);
     var isServer = true;
     var socket;
     var lastPos = {};
+
+    $scope.goMainPage = function() {
+        $state.go('tab.friends');
+    };
 
     $scope.map = {
         center: {
             latitude: 32.0813,
             longitude: 34.781768
         },
-        zoom: 16
+        zoom: 16,
+        markers: [
+            {
+                id: 1,
+                latitude: 32.0813,
+                longitude: 34.781768,
+                showWindow: false,
+                title: 'Marker 1'
+            },
+            {
+                id: 2,
+                latitude: 32.0823,
+                longitude: 34.7827,
+                showWindow: false,
+                title: 'Marker 2'
+            }]
     };
+
+    _.each($scope.map.markers, function (marker) {
+        marker.closeClick = function () {
+            marker.showWindow = false;
+            $scope.$apply();
+        };
+        marker.onClicked = function () {
+            $scope.onMarkerClicked(marker);
+        };
+    });
+
+    $scope.onMarkerClicked = function (marker) {
+        marker.showWindow = true;
+        $scope.$apply();
+    };
+
 
     $scope.doLog = function() {
         $scope.socketStatus = new Date();
@@ -267,24 +302,63 @@ angular.module('Gis2.controllers', [])
         console.log(channels);
     };
 
+    $scope.setMapLocation = function() {
+        $scope.map.center = {
+            latitude: lastPos.latitude,
+            longitude: lastPos.longitude
+        } ;
+        $log.log('set center', $scope.map.center);
+    };
 })
 
-.controller('FriendsCtrl', function($scope, Friends) {
+.controller('FriendsCtrl', function($scope, $log, $timeout, Gis) {
+    //google.maps.visualRefresh = true;
+
+    $scope.$on('gis-peer-location', function(event, markers) {
+        $log.log('Update markers');
+        $scope.map.markers = Gis.getMarkers();
+    });
+
+    /*
+    $scope.$on('gis-location', function(event, pos) {
+        $scope.map.center = {
+            latitude: pos.latitude,
+            longitude: pos.longitude
+        };
+
+        $log.log('gis-location even, center map', $scope.map.center);
+    });
+    */
+
     $scope.item = {
         text: "String"
     };
 
     $scope.map = {
-        center: {
-            latitude: 32.0813,
-            longitude: 34.781768
-        },
+        center: Gis.myPosition,
         options: {
             disableDefaultUI: true
         },
-        zoom: 16
+        zoom: 16,
+        markers: Gis.getMarkers()
     };
+
+    $scope.centerMap = function() {
+        var pos = Gis.myPosition;
+        $scope.map.center = {
+            latitude: pos.latitude,
+            longitude: pos.longitude
+        } ;
+
+        $log.log('set center', $scope.map.center);
+    };
+
+    $log.log('FriendsCtrl ready');
 })
 
-.controller('AccountCtrl', function($scope) {
+.controller('AccountCtrl', function($scope, $state, ConfigService) {
+    $scope.setup = ConfigService;
+    $scope.selfTest = function() {
+        $state.go('self-test');
+    };
 });

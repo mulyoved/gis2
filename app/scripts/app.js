@@ -6,12 +6,13 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('Gis2', ['ionic', 'Gis2.controllers', 'Gis2.services', 'pubnub.angular.service', 'google-maps'])
+angular.module('Gis2', ['ionic', 'Gis2.controllers', 'Gis2.services', 'pubnub.angular.service', 'google-maps', 'Gis2.GISService'])
 
-.run(function($ionicPlatform, $log) {
+.run(function($ionicPlatform, $log, Gis) {
   $ionicPlatform.ready(function() {
     //StatusBar.styleDefault();
       $log.log("Device: ", ionic.Platform.device(), ionic.Platform.isWebView());
+      Gis.init();
   });
 })
 
@@ -22,8 +23,15 @@ angular.module('Gis2', ['ionic', 'Gis2.controllers', 'Gis2.services', 'pubnub.an
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
+      .state('self-test', {
+          url: '/selftest',
+          abstract: false,
+          templateUrl: 'templates/tab-dash.html',
+          controller: 'SelfTestCtrl'
+      })
 
-    // setup an abstract state for the tabs directive
+
+      // setup an abstract state for the tabs directive
     .state('tab', {
       url: '/tab',
       abstract: true,
@@ -32,31 +40,12 @@ angular.module('Gis2', ['ionic', 'Gis2.controllers', 'Gis2.services', 'pubnub.an
 
     // Each tab has its own nav history stack:
 
-    .state('tab.dash', {
-      url: '/dash',
-      views: {
-        'tab-dash': {
-          templateUrl: 'templates/tab-dash.html',
-          controller: 'SelfTestCtrl'
-        }
-      }
-    })
-
     .state('tab.friends', {
       url: '/friends',
       views: {
         'tab-friends': {
           templateUrl: 'templates/tab-friends.html',
           controller: 'FriendsCtrl'
-        }
-      }
-    })
-    .state('tab.friend-detail', {
-      url: '/friend/:friendId',
-      views: {
-        'tab-friends': {
-          templateUrl: 'templates/friend-detail.html',
-          controller: 'FriendDetailCtrl'
         }
       }
     })
@@ -72,7 +61,14 @@ angular.module('Gis2', ['ionic', 'Gis2.controllers', 'Gis2.services', 'pubnub.an
     });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/tab/friends');
 
+})
+
+.factory('ConfigService', function() {
+    return {
+        version: '0.0.0.1',
+        showFakeItem: true
+    }
 });
 

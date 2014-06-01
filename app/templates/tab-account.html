@@ -1,5 +1,23 @@
-<ion-view title="Account">
+<ion-view title="Setup">
   <ion-content class="has-header padding">
-    <h1>Account</h1>
+      <ion-list>
+          <li class="item item-toggle">
+              Show Fake Items
+              <label class="toggle">
+                  <input type="checkbox" ng-model="setup.showFakeItem" />
+                  <div class="track">
+                      <div class="handle"></div>
+                  </div>
+              </label>
+          </li>
+          <li id="self-test" class="item" ng-click="selfTest()">
+              Self Test Screen
+              <i class="icon float-right large-font ion-chevron-right"></i>
+          </li>
+          <li class="item">
+              Made with <span><i class="icon large-font ion-heart"></i></span> by Muly, May 2014
+              <p><span class="foot-note">mulyoved@gmail.com</span></p>
+          </li>
+      </ion-list>
   </ion-content>
 </ion-view>

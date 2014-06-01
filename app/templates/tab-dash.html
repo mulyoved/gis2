@@ -1,6 +1,7 @@
 <ion-view title="Self Test">
   <ion-content class="has-header padding">
       <p>Device ID: {{uuid}}</p>
+      <button ng-click="goMainPage()">Main Screen</button>
       <p>Version 9.0</p>
       <button ng-click="doLog()">Log Sample Message</button>
       <h3>PubNub</h3>
@@ -24,7 +25,21 @@
       <h3>GIS</h3>
       <button ng-click="getGISLocation()">Get Location</button>
       <button ng-click="watchGISLocation()">Watch Location</button>
+      <button ng-click="setMapLocation()">Set Location On Map</button>
       <pre>GIS Info: {{gisInfo}}</pre>
-      <google-map class="test-limit-size" center="map.center" zoom="map.zoom"></google-map>
+      <google-map class="test-limit-size"
+                  center="map.center"
+                  draggable="true"
+                  zoom="map.zoom">
+
+          <markers models="map.markers" coords="'self'" icon="'icon'" click="'onClicked'" fit='true'>
+              <windows class="marker-info-window" show="'showWindow'" closeClick="'closeClick'" ng-cloak>
+                  <div >
+                      <p ng-non-bindable>{{title}}</p>
+                      <p ng-non-bindable>Position: {{ latitude | number:4 }}, {{ longitude | number:4 }}</p>
+                  </div>
+              </windows>
+          </markers>
+      </google-map>
   </ion-content>
 </ion-view>
