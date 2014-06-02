@@ -38,3 +38,34 @@ Add .cordova folder to make the project PhoneGap compatible
 
 `phonegap serve`
 
+Issues
+-----------
+if location service not run
+`adb logcat AndroidRuntime:E dalvikvm:S GCM:D memtrack:S android.os.Debug:S eglCodecCommon:S jdwp:S linker:E SoundPool:S AudioService:S IInputConnectionWrapper:E WindowManager:E`
+
+Need to add to AndroidManifest.xml (Config.xml?)
+
+When adding platform need to add those
+
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+Publish Application
+---------------------
+Create key store
+keytool -genkey -v -keystore /d/js/KeyStore/gis2-release-key.keystore -alias gis2 -keyalg RSA -keysize 2048 -validity 10000
+
+Create/Update ant.properties
+key.store=/js/KeyStore/gis2-release-key.keystore
+key.alias=gis2
+
+Convert icons
+http://www.appiconsizes.com/
+
+http://makeappicon.com/ (This one maybe better and more aligned with the PhoneGap docs http://docs.phonegap.com/en/edge/config_ref_images.md.html
+
+Configure icons in config.xml
+
+create hook file after_prepare.js to copy the main icon
+
+cordova Catch22build android --release

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.example.Gis2" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.fin-alg.Gis2" version="0.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Gis2</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -7,6 +7,36 @@
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Apache Cordova Team
     </author>
+    <platform name="android">
+        <icon src="app/res/icons/android/res/drawable/Icon.png" />
+        <icon src="app/res/icons/android/res/drawable-ldpi/Icon.png" density="ldpi" />
+        <icon src="app/res/icons/android/res/drawable-mdpi/Icon.png" density="mdpi" />
+        <icon src="app/res/icons/android/res/drawable-hdpi/Icon.png" density="hdpi" />
+        <icon src="app/res/icons/android/res/drawable-xhdpi/Icon.png" density="xhdpi" />
+    </platform>
+    <platform name="ios">
+        <!-- iOS 7.0+ -->
+        <!-- iPhone / iPod Touch  -->
+        <icon src="app/res/icons/ios/icon/Icon-60.png" width="60" height="60" />
+        <icon src="app/res/icons/ios/icon/Icon-60@2x.png" width="120" height="120" />
+        <!-- iPad -->
+        <icon src="app/res/icons/ios/icon/Icon-76.png" width="76" height="76" />
+        <icon src="app/res/icons/ios/icon/Icon-152.png" width="152" height="152" />
+        <!-- iOS 6.1 -->
+        <!-- Spotlight Icon -->
+        <icon src="app/res/icons/ios/icon/toolbar-icon.png" width="40" height="40" />
+        <icon src="app/res/icons/ios/icon/Icon-40@2x.png" width="80" height="80" />
+        <!-- iPhone / iPod Touch -->
+        <icon src="app/res/icons/ios/icon/Icon.png" width="57" height="57" />
+        <!-- iPad -->
+        <icon src="app/res/icons/ios/icon/Icon-72.png" width="72" height="72" />
+        <!-- iPhone Spotlight and Settings Icon -->
+        <icon src="app/res/icons/ios/icon/Icon-Small.png" width="29" height="29" />
+        <icon src="app/res/icons/ios/icon/Icon-Small@2x.png" width="58" height="58" />
+        <!-- iPad Spotlight and Settings Icon -->
+        <icon src="app/res/icons/ios/icon/Icon-Small-50.png" width="50" height="50" />
+        <icon src="app/res/icons/ios/icon/Icon-Small-100.png" width="100" height="100" />
+    </platform>
     <content src="index.html" />
     <access origin="*" />
 </widget>

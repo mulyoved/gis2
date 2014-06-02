@@ -38,6 +38,8 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "start": "grunt copy:all && grunt emulate:android",
+    "log": "adb logcat GCM:D memtrack:S android.os.Debug:S eglCodecCommon:S jdwp:S linker:E *:W EGL_emulation:E SoundPool:S AudioService:S IInputConnectionWrapper:E WindowManager:E"
   }
 }

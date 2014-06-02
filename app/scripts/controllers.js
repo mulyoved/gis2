@@ -73,6 +73,7 @@ angular.module('Gis2.controllers', [])
             timestamp: position.timestamp
         };
         $scope.$apply(function() {
+            $log.log('Recived location', lastPos);
             $scope.gisInfo = JSON.stringify(lastPos, null, 2);
             //$scope.map.center = lastPos;
             $scope.map.center =lastPos;
@@ -82,6 +83,9 @@ angular.module('Gis2.controllers', [])
     };
 
     var onError = function(error) {
+        $log.error("Error", error);
+
+
         var err = {
             error_code: error.code,
             message: error.message
@@ -93,7 +97,13 @@ angular.module('Gis2.controllers', [])
     };
 
     $scope.getGISLocation = function() {
-        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        var options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+        };
+
+        navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
         console.log('getCurrentPosition');
     };
 
@@ -315,8 +325,10 @@ angular.module('Gis2.controllers', [])
     //google.maps.visualRefresh = true;
 
     $scope.$on('gis-peer-location', function(event, markers) {
-        $log.log('Update markers');
-        $scope.map.markers = Gis.getMarkers();
+        $scope.$apply(function() {
+            $scope.map.markers = Gis.getMarkers();
+            //$log.log('Update markers', $scope.map.markers);
+        });
     });
 
     /*
