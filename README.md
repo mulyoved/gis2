@@ -1,3 +1,5 @@
+<img src="https://www.codeship.io/projects/c2913530-cc5c-0131-1402-02f1b5f2329d/status"></img>
+
 GIS2
 ===
 GIS Feature sample application
