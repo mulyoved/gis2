@@ -71,3 +71,65 @@ Configure icons in config.xml
 create hook file after_prepare.js to copy the main icon
 
 cordova Catch22build android --release
+
+Publish PhoneGap serve to Heruko
+--------------------------------
+Push
+
+email: gis.server.sample@gmail.com
+
+http://iconof.com/blog/node-js-amazon-cloudformation-template/
+http://iconof.com/blog/how-to-install-setup-node-js-on-amazon-aws-ec2-complete-guide
+
+create ec2 micro image
+
+http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
+use PuTTYgen to convert ec2 private key pem to ppk
+
+use PuTTY to login
+ec2-user
+
+
+pull from github
+git clone https://github.com/mulyoved/gis2
+
+dc gis2
+npm install
+
+sudo npm install -g cordova
+sudo npm install -g phonegap
+sudo npm install -g grunt
+sudo npm install -g grunt-cli
+sudo npm install -g bower
+
+bower install
+grunt copy:all
+
+copy main.css to www/styles
+
+screen
+sudo phonegap serve --port 80
+
+enable security group _> Got to instance -> Click on the security group -> and edit
+add inbound http from any port
+
+
+Use Instructions
+----------------
+
+
+Create a demo application that show current device and other connected devices location on google maps
+
+"GIS Sample application" is available at the Google App Store
+https://play.google.com/store/apps/details?id=com.fin_alg.Gis2
+
+Also there some screen shots
+
+The application is not yet available on the Apple App store due to bureaucratic delays but will be soon
+Can still experience with the live application on any iOS device by:
+Download "PhoneGap Developer"
+
+https://itunes.apple.com/il/app/id843536693?mt=8
+
+from the application connect to 54.200.20.122
+Will take some time to load but once loaded you will be able to ue the application on iPhone or iPad

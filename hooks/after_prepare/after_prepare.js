@@ -3,6 +3,9 @@
 var filestocopy = [{
     "app/res/icons/android/res/drawable/Icon.png": 
     "platforms/android/res/drawable/icon.png"
+}, {
+    ".tmp/styles/main.css":
+        "www/styles/main.css"
 }];
 
 console.log('CUSTOM Build step after_prepare');

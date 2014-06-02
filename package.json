@@ -40,6 +40,7 @@
   "scripts": {
     "test": "grunt test",
     "start": "grunt copy:all && grunt emulate:android",
+    "serve": "grunt copy:all && phonegap serve",
     "log": "adb logcat GCM:D memtrack:S android.os.Debug:S eglCodecCommon:S jdwp:S linker:E *:W EGL_emulation:E SoundPool:S AudioService:S IInputConnectionWrapper:E WindowManager:E"
   }
 }
